@@ -1,50 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <TextView
-        android:id="@+id/text_loginEmail"
+        android:id="@+id/text_registerEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email:"
         android:textAlignment="center" />
 
     <EditText
-        android:id="@+id/loginEmail"
+        android:id="@+id/registerEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress" />
 
     <TextView
-        android:id="@+id/text_loginPass"
+        android:id="@+id/text_registerUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/registerUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/text_registerPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Password:"
         android:textAlignment="center" />
 
     <EditText
-        android:id="@+id/loginPass"
+        android:id="@+id/registerPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/text_registerPassConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm password:"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/registerPassConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_confirmRegistration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log in"
-        android:textAlignment="center" />
-
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register an account"
+        android:text="Register"
         android:textAlignment="center" />
 </LinearLayout>

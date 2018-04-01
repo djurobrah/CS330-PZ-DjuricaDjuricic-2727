@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "222641338824",
+    "firebase_url": "https://cs330-pz-djuricadjuricic-2727.firebaseio.com",
+    "project_id": "cs330-pz-djuricadjuricic-2727",
+    "storage_bucket": "cs330-pz-djuricadjuricic-2727.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222641338824:android:9bed9d4bfa3c8685",
+        "android_client_info": {
+          "package_name": "metropolitan.com.sporters"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222641338824-tu31hubta1j84sharcvmai1bq00atkiu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "metropolitan.com.sporters",
+            "certificate_hash": "5106415705e82f94af8aca8cc589ad833004ada8"
+          }
+        },
+        {
+          "client_id": "222641338824-rmahvibnmkd620tqiffifjt23msbk0rv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-p9Vlyyv2kvpC-DAejRtTW58ED4Mhuew"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222641338824-rmahvibnmkd620tqiffifjt23msbk0rv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
