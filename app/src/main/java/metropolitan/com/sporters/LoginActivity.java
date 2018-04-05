@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,7 +63,10 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         {
             case R.id.btn_login:
             {
-                login(m_email.getText().toString(), m_password.getText().toString());
+                if(validLoginForm())
+                {
+                    login(m_email.getText().toString(), m_password.getText().toString());
+                }
                 break;
             }
             case R.id.btn_register:
@@ -72,6 +76,18 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
                 break;
             }
         }
+    }
+
+    private boolean validLoginForm()
+    {
+        String email = m_email.getText().toString();
+        String password = m_password.getText().toString();
+        if(email.equals("") || password.equals(""))
+        {
+            Toast.makeText(this, "Please fill out all the fields.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
     private void login(String email, String password)
@@ -87,15 +103,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
                             Intent intent = new Intent(getBaseContext(), MapsActivity.class);
                             startActivity(intent);
                             //FirebaseUser user = mAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                           Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
                         }
-
-                        // ...
+                        else
+                        {
+                            Toast.makeText(LoginActivity.this, "Login failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
