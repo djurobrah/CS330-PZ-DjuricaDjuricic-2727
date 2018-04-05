@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.karan.churi.PermissionManager.PermissionManager;
+
+import java.util.ArrayList;
 
 
 public class LoginActivity extends AppCompatActivity implements OnClickListener
@@ -26,6 +29,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
     Button m_register;
 
     private FirebaseAuth mAuth;
+
+    PermissionManager permission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         m_register.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+
+        permission = new PermissionManager(){};
     }
 
     @Override
@@ -65,7 +72,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
             {
                 if(validLoginForm())
                 {
-                    login(m_email.getText().toString(), m_password.getText().toString());
+                    ArrayList<String> granted = permission.getStatus().get(0).granted;
+                    if(!granted.contains("android.permission.ACCESS_FINE_LOCATION"))
+                    {
+                        permission.checkAndRequestPermissions(this);
+                    }
+
                 }
                 break;
             }
@@ -102,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
                         {
                             Intent intent = new Intent(getBaseContext(), MapsActivity.class);
                             startActivity(intent);
-                            //FirebaseUser user = mAuth.getCurrentUser();
                         }
                         else
                         {
@@ -122,6 +133,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
                 String result = data.getStringExtra("result");
                 m_email.setText(result);
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults)
+    {
+        permission.checkResult(requestCode,permissions, grantResults);
+        ArrayList<String> granted = permission.getStatus().get(0).granted;
+        if(granted.contains("android.permission.ACCESS_FINE_LOCATION"))
+        {
+            login(m_email.getText().toString(), m_password.getText().toString());
         }
     }
 }
