@@ -1,9 +1,12 @@
 package metropolitan.com.sporters;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,12 +75,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
             {
                 if(validLoginForm())
                 {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    {
+                        login(m_email.getText().toString(), m_password.getText().toString());
+                        return;
+                    }
+
                     ArrayList<String> granted = permission.getStatus().get(0).granted;
                     if(!granted.contains("android.permission.ACCESS_FINE_LOCATION"))
                     {
                         permission.checkAndRequestPermissions(this);
                     }
-
                 }
                 break;
             }
