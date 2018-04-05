@@ -8,16 +8,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -54,12 +61,37 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId())
         {
             case R.id.btn_confirmRegistration:
-                registerUser(m_email.getText().toString(), m_password.getText().toString());
+                if(validRegistrationForm())
+                {
+                    register(m_email.getText().toString(), m_username.getText().toString(), m_password.getText().toString());
+                }
                 break;
         }
     }
 
-    private void registerUser(String email, String password)
+    private void register(final String email, final String username, final String password)
+    {
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                if (!snapshot.hasChild(username))
+                {
+                    registerUser(email, username, password);
+                }
+                else
+                {
+                    Toast.makeText(RegisterActivity.this, "Username already exists.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void registerUser(String email, final String username, String password)
     {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
@@ -73,23 +105,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             returnIntent.putExtra("result", mAuth.getCurrentUser().getEmail());
                             setResult(Activity.RESULT_OK, returnIntent);
 
-                            String uuid = mAuth.getCurrentUser().getUid();
-                            String username = m_username.getText().toString();
-                            databaseAddUser(new User(uuid, username));
+                            databaseAddUser(new User(username, 0, 0));
 
                             FirebaseAuth.getInstance().signOut();
                             finish();
                         }
                         else
-                            {
-                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+                        {
+                            Toast.makeText(RegisterActivity.this, "Authentication failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Intent returnIntent = new Intent();
+                            setResult(Activity.RESULT_CANCELED, returnIntent);
                         }
-
-                        // ...
                     }
 
                 });
@@ -98,6 +124,45 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void databaseAddUser(User user)
     {
         HashMap<String, Object> userMap = user.toMap();
-        mDatabaseRef.updateChildren(userMap);
+        DatabaseReference userRef = mDatabaseRef.child(user.getUsername());
+        userRef.updateChildren(userMap);
     }
+
+    private boolean validRegistrationForm()
+    {
+        String email = m_email.getText().toString();
+        String username = m_username.getText().toString();
+        String password = m_password.getText().toString();
+        String passwordConfirm = m_passwordConfirm.getText().toString();
+
+        if(email.equals("") || username.equals("") || password.equals("") || passwordConfirm.equals(""))
+        {
+            Toast.makeText(this, "Please fill out all the fields.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        Pattern pattern = Pattern.compile("[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        if(!matcher.matches())
+        {
+            Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(!password.equals(passwordConfirm))
+        {
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(password.length() < 6)
+        {
+            Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
+    }
+
+
 }
