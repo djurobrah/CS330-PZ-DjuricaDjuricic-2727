@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class User
 {
-    public String username;
-    public int gamesPlayed;
-    public int bailedGames;
+    private String username;
+    private int gamesPlayed;
+    private int bailedGames;
 
     public User() {}
 

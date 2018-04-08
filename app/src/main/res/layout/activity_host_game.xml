@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HostGameActivity">
+
+    <TextView
+        android:id="@+id/text_hostName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Game name:"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/hostName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/text_hostPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Maximum players:"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/text_hostPlayersNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textAlignment="center" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_hostLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/text_hostLocationAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No location picked."
+        android:textAlignment="center"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_hostLocation"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Choose location" />
+
+    <Button
+        android:id="@+id/btn_hostGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Host game" />
+
+</LinearLayout>

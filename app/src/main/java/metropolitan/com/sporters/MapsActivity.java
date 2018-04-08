@@ -3,6 +3,7 @@ package metropolitan.com.sporters;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
@@ -76,8 +77,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             case R.id.btn_hostGame:
             {
-//                Intent i = new Intent(MainActivity.this, NextActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(this, HostGameActivity.class);
+                startActivity(i);
                 return true;
             }
             case android.R.id.home:
