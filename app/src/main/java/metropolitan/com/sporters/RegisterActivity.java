@@ -16,7 +16,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -102,15 +101,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     {
                         if (task.isSuccessful())
                         {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
-                            user.updateProfile(profileUpdates);
-
                             Intent returnIntent = new Intent();
                             returnIntent.putExtra("result", mAuth.getCurrentUser().getEmail());
                             setResult(Activity.RESULT_OK, returnIntent);
 
-                            databaseAddUser(new User(mAuth.getCurrentUser().getUid(), username, 0, 0));
+                            databaseAddUser(new User(username, 0, 0));
 
                             FirebaseAuth.getInstance().signOut();
                             finish();
@@ -129,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void databaseAddUser(User user)
     {
         HashMap<String, Object> userMap = user.toMap();
-        DatabaseReference userRef = mDatabaseRef.child(user.getUid());
+        DatabaseReference userRef = mDatabaseRef.child(user.getUsername());
         userRef.updateChildren(userMap);
     }
 

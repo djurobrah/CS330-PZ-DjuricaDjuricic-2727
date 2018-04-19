@@ -20,24 +20,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback
 {
     private GoogleMap mMap;
     LocationManager lm;
-    private DatabaseReference mDatabaseRef;
-    ArrayList<Game> currentGames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,29 +43,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         lm = (LocationManager) getSystemService (Context.LOCATION_SERVICE);
-
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("games");
-        mDatabaseRef.addChildEventListener(new ChildEventListener()
-        {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s)
-            {
-                //updateMarkers(dataSnapshot);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot)
-            {
-                //updateMarkers(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
     }
 
     @Override
@@ -96,21 +62,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
-
-//    private void updateMarkers(DataSnapshot dataSnapshot)
-//    {
-//        for (DataSnapshot gameSnapshot: dataSnapshot.getChildren())
-//        {
-//            Game game = gameSnapshot.getValue(Game.class);
-//            String name = game.getName();
-//            int maxPlayers = game.getMaxPlayers();
-//            double lat = game.getLatitude();
-//            double lng = game.getLongitude();
-//
-//            //mMap.addMarker(new MarkerOptions().position(new LatLng()))
-//        }
-//    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
