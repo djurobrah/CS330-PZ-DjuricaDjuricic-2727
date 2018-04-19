@@ -17,6 +17,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,6 +39,8 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
 
     private DatabaseReference mDatabaseRef;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,11 +59,11 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
 
         mPlace = null;
 
+        mAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("games");
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
@@ -96,30 +99,47 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
             }
             case R.id.btn_hostGame:
             {
-                String gameName = mGameName.getText().toString();
-                String maxPlayers = mPlayers.getText().toString();
-                Place place = mPlace;
-                if(gameName.equals("") || maxPlayers.equals("") || place == null)
+                if(validForm())
                 {
-                    Toast.makeText(this, "Please input all necessary data.", Toast.LENGTH_LONG).show();
-                    break;
+                    createGame();
                 }
-
-                Game game = new Game(gameName, Integer.parseInt(maxPlayers), place.getLatLng().latitude, place.getLatLng().longitude);
-                HashMap<String, Object> gameMap = game.toMap();
-
-                Map<String, Object> map = new HashMap<>();
-                String randomKey = mDatabaseRef.push().getKey();
-                mDatabaseRef.updateChildren(map);
-
-                DatabaseReference gameRef = mDatabaseRef.child(randomKey);
-                gameRef.updateChildren(gameMap);
-
-                Intent intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
                 break;
             }
         }
+    }
+
+    private void createGame()
+    {
+        String gameName = mGameName.getText().toString();
+        int maxPlayers = Integer.parseInt(mPlayers.getText().toString());
+        double lat = mPlace.getLatLng().latitude;
+        double lng = mPlace.getLatLng().longitude;
+
+        Game game = new Game(gameName, maxPlayers, lat, lng);
+        HashMap<String, Object> gameMap = game.toMap();
+        HashMap<String, Object> usersMap = game.createUserMap(mAuth.getCurrentUser().getDisplayName());
+
+        DatabaseReference gameRef = mDatabaseRef.child(gameName);
+        gameRef.updateChildren(gameMap);
+
+        DatabaseReference usersRef = gameRef.child("users");
+        usersRef.updateChildren(usersMap);
+
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean validForm()
+    {
+        String gameName = mGameName.getText().toString();
+        String maxPlayers = mPlayers.getText().toString();
+        Place place = mPlace;
+        if(gameName.equals("") || maxPlayers.equals("") || place == null)
+        {
+            Toast.makeText(this, "Please input all necessary data.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -136,4 +156,6 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
+
 }
