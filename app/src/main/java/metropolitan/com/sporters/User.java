@@ -7,7 +7,6 @@ public class User
 {
     private String username;
     private int gamesPlayed;
-    private int bailedGames;
 
     public User() {}
 
@@ -15,14 +14,12 @@ public class User
     {
         this.username = username;
         this.gamesPlayed = gamesPlayed;
-        this.bailedGames = bailedGames;
     }
 
     public HashMap<String, Object> toMap()
     {
         HashMap<String, Object> result = new HashMap<>();
         result.put("gamesPlayed", gamesPlayed);
-        result.put("bailedGames", bailedGames);
         return result;
     }
 
@@ -44,15 +41,5 @@ public class User
     public void setGamesPlayed(int gamesPlayed)
     {
         this.gamesPlayed = gamesPlayed;
-    }
-
-    public int getBailedGames()
-    {
-        return bailedGames;
-    }
-
-    public void setBailedGames(int bailedGames)
-    {
-        this.bailedGames = bailedGames;
     }
 }

@@ -9,7 +9,6 @@ public class Game
 {
     private String name;
     private int maxPlayers;
-    //private ArrayList<String> users;
     private double latitude;
     private double longitude;
 
@@ -19,7 +18,6 @@ public class Game
     {
         this.name = name;
         this.maxPlayers = maxPlayers;
-        //this.users = users;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -27,11 +25,26 @@ public class Game
     public HashMap<String, Object> toMap()
     {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("name", name);
         result.put("maxPlayers", maxPlayers);
-        //result.put("users", users);
         result.put("latitude", latitude);
         result.put("longitude", longitude);
+        return result;
+    }
+
+    public HashMap<String, Object> initializeUsers(String host)
+    {
+        HashMap<String, Object> result = new HashMap<>();
+        for (int i = 1; i <= this.maxPlayers; i++)
+        {
+            if(i == 1)
+            {
+                result.put(String.valueOf(i), host);
+            }
+            else
+            {
+                result.put(String.valueOf(i), "z");
+            }
+        }
         return result;
     }
 }
