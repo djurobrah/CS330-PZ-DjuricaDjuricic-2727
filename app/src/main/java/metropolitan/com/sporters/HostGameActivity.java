@@ -127,8 +127,24 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
         DatabaseReference usersRef = gameRef.child("users");
         usersRef.updateChildren(usersMap);
 
-        Intent intent = new Intent(this, MapsActivity.class);
+        createMessageGroup(gameName, mAuth.getCurrentUser().getDisplayName());
+
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("gameName", gameName);
         startActivity(intent);
+    }
+
+    private void createMessageGroup(String gameName, String hostName)
+    {
+        DatabaseReference groupMessageRef = FirebaseDatabase.getInstance().getReference().child("messages/" + gameName);
+
+        Map<String, Object> map = new HashMap<>();
+        String randomKey = groupMessageRef.push().getKey();
+        groupMessageRef.updateChildren(map);
+
+        DatabaseReference msgChild = groupMessageRef.child(randomKey);
+        Map<String, Object> map1 = new Message(hostName,":has created the game!").toMap();
+        msgChild.updateChildren(map1);
     }
 
     private boolean validForm()

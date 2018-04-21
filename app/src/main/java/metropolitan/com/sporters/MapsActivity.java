@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener
 {
     private GoogleMap mMap;
     LocationManager lm;
@@ -59,13 +59,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         lm = (LocationManager) getSystemService (Context.LOCATION_SERVICE);
     }
-
-//    @Override
-//    protected void onPostResume()
-//    {
-//        super.onPostResume();
-//        onMapReady(mMap);
-//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -107,6 +100,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setOnMarkerClickListener(this);
     }
 
     private void addToMarkers(DataSnapshot dataSnapshot)
@@ -114,6 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Game game = dataSnapshot.getValue(Game.class);
         String gameName = dataSnapshot.getRef().getKey();
         Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(game.getLatitude(),game.getLongitude())));
+        marker.setTitle(gameName);
         markerHashMap.put(gameName, marker);
     }
 
@@ -171,6 +166,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+        Intent i = new Intent(this, GameActivity.class);
+        i.putExtra("gameName", marker.getTitle());
+        startActivity(i);
         return true;
     }
 }
