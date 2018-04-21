@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationManager lm;
     private DatabaseReference mDatabaseRef;
     HashMap<String, Marker> markerHashMap;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,6 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         lm = (LocationManager) getSystemService (Context.LOCATION_SERVICE);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -172,9 +175,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker)
     {
-        Intent i = new Intent(this, GameActivity.class);
-        i.putExtra("gameName", marker.getTitle());
-        startActivity(i);
+        checkAndJoin(marker.getTitle());
         return true;
+    }
+
+    public void checkAndJoin(final String title)
+    {
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference().child("games/"+ title + "/users");
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for (DataSnapshot child : snapshot.getChildren())
+                {
+                    if(child.getValue().toString().equals("z"))
+                    {
+                        child.getRef().setValue(mAuth.getCurrentUser().getDisplayName());
+                        Intent i = new Intent(MapsActivity.this, GameActivity.class);
+                        i.putExtra("gameName", title);
+                        startActivity(i);
+                        return;
+                    }
+                }
+                Toast.makeText(MapsActivity.this, "This game is full.", Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 }
