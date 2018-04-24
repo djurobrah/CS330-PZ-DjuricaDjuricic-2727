@@ -1,9 +1,6 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import metropolitan.com.sporters.Domain.Game;
+import metropolitan.com.sporters.Domain.Message;
+import metropolitan.com.sporters.R;
 
 public class HostGameActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -143,7 +142,7 @@ public class HostGameActivity extends AppCompatActivity implements View.OnClickL
         groupMessageRef.updateChildren(map);
 
         DatabaseReference msgChild = groupMessageRef.child(randomKey);
-        Map<String, Object> map1 = new Message(hostName,":has created the game!").toMap();
+        Map<String, Object> map1 = new Message(hostName, ":has created the game!").toMap();
         msgChild.updateChildren(map1);
     }
 

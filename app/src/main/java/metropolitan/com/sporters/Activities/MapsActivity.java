@@ -1,4 +1,4 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -12,7 +12,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -32,9 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+
+import metropolitan.com.sporters.Domain.Game;
+import metropolitan.com.sporters.R;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener
@@ -98,7 +98,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), lm.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));
+        if(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null)
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), lm.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude()), 12.0f));
+        }
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);

@@ -1,4 +1,4 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import metropolitan.com.sporters.Domain.Message;
+import metropolitan.com.sporters.R;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MessageHolder>
 {

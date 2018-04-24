@@ -1,4 +1,4 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import metropolitan.com.sporters.Utils.ListAdapter;
+import metropolitan.com.sporters.Domain.Message;
+import metropolitan.com.sporters.R;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener
 {

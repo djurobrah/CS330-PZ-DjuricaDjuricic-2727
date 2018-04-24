@@ -1,4 +1,4 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Domain;
 
 import com.google.android.gms.maps.model.LatLng;
 

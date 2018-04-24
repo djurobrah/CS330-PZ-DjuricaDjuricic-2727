@@ -1,4 +1,4 @@
-package metropolitan.com.sporters;
+package metropolitan.com.sporters.Activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.karan.churi.PermissionManager.PermissionManager;
 
 import java.util.ArrayList;
+
+import metropolitan.com.sporters.R;
 
 
 public class LoginActivity extends AppCompatActivity implements OnClickListener

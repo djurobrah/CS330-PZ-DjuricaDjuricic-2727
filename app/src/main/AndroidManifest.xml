@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,13 +24,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".HostGameActivity" />
-        <activity android:name=".GameActivity"
-            android:parentActivityName=".MapsActivity"></activity>
+            android:parentActivityName=".Activities.LoginActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.HostGameActivity" />
+        <activity android:name=".Activities.GameActivity"
+            android:parentActivityName=".Activities.MapsActivity"></activity>
     </application>
 
 </manifest>
